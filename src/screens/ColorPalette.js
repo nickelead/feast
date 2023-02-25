@@ -1,37 +1,24 @@
 import React from 'react';
-import { Text, StyleSheet, FlatList } from 'react-native';
-import { COLORS } from '../constants';
+import { FlatList, StyleSheet } from 'react-native';
 import { ColorBox } from '../components';
 
-const ColorPalette = () => {
+export const ColorPalette = ({ route }) => {
+  const { colors } = route.params;
   return (
     <FlatList
       style={styles.top}
-      data={COLORS}
+      data={colors}
       keyExtractor={({ hexCode }) => hexCode}
       renderItem={({ item }) => (
         <ColorBox colorName={item.colorName} hexCode={item.hexCode} />
       )}
-      ListHeaderComponent={
-        <Text style={styles.heading}>
-          Here are some boxes of different colours
-        </Text>
-      }
     />
   );
 };
 
 const styles = StyleSheet.create({
-  heading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   top: {
-    paddingTop: 50,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    padding: 10,
+    backgroundColor: 'white',
   },
 });
-
-export default ColorPalette;
