@@ -1,37 +1,25 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { SOLARIZED, FRONTEND_MASTERS, RAINBOW } from '../constants';
+import { FlatList, StyleSheet } from 'react-native';
+import { PalettePreview } from '../components';
+import { COLOR_PALETTES } from '../constants';
 
-export const Home = ({ navigation }) => {
+export const Home = () => {
   return (
-    <View>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('ColorPalette', {
-            colors: SOLARIZED,
-            paletteName: 'Solarized',
-          })
-        }>
-        <Text>Solarized</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('ColorPalette', {
-            colors: FRONTEND_MASTERS,
-            paletteName: 'Frontend Masters',
-          })
-        }>
-        <Text>Frontend Masters</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('ColorPalette', {
-            colors: RAINBOW,
-            paletteName: 'Rainbow',
-          })
-        }>
-        <Text>Rainbow</Text>
-      </TouchableOpacity>
-    </View>
+    <FlatList
+      style={styles.list}
+      data={COLOR_PALETTES}
+      keyExtractor={item => item.paletteName}
+      renderItem={({ item }) => (
+        <PalettePreview paletteName={item.paletteName} colors={item.colors} />
+      )}
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'white',
+  },
+});
