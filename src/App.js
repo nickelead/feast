@@ -1,19 +1,33 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import ColorBox from './components/ColorBox';
+import { FlatList, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { ColorBox } from './components';
+import { COLORS } from './constants';
 
 const App = () => {
   return (
     <SafeAreaView>
-      <View style={styles.top}>
-        <Text style={styles.heading}>
-          Here are some boxes of different colours
-        </Text>
-        <ColorBox text={'Cyan'} color={'#2aa198'} />
-        <ColorBox text={'Blue'} color={'#268bd2'} />
-        <ColorBox text={'Magenta'} color={'#d33682'} />
-        <ColorBox text={'Orange'} color={'#cb4b16'} />
-      </View>
+      <FlatList
+        style={styles.top}
+        data={COLORS}
+        keyExtractor={({ hexCode }) => hexCode}
+        renderItem={({ item }) => (
+          <ColorBox colorName={item.colorName} hexCode={item.hexCode} />
+        )}
+        ListHeaderComponent={
+          <Text style={styles.heading}>
+            Here are some boxes of different colours
+          </Text>
+        }
+      />
+      {/*<ScrollView style={styles.top}>*/}
+      {/*  <Text style={styles.heading}>*/}
+      {/*    Here are some boxes of different colours*/}
+      {/*  </Text>*/}
+      {/*  <ColorBox colorName={'Cyan'} hexCode={'#2aa198'} />*/}
+      {/*  <ColorBox colorName={'Blue'} hexCode={'#268bd2'} />*/}
+      {/*  <ColorBox colorName={'Magenta'} hexCode={'#d33682'} />*/}
+      {/*  <ColorBox colorName={'Orange'} hexCode={'#cb4b16'} />*/}
+      {/*</ScrollView>*/}
     </SafeAreaView>
   );
 };
@@ -27,6 +41,7 @@ const styles = StyleSheet.create({
   top: {
     paddingTop: 50,
     paddingHorizontal: 10,
+    paddingBottom: 10,
   },
 });
 
