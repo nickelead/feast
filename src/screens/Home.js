@@ -1,10 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { PalettePreview } from '../components';
+import { useNavigation } from '@react-navigation/native';
 
 export const Home = () => {
   const [palettes, setPalettes] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { navigate } = useNavigation();
 
   const fetchData = useCallback(async () => {
     const result = await fetch(
@@ -26,18 +34,27 @@ export const Home = () => {
     setIsRefreshing(false);
   }, [fetchData]);
 
+  const handlePress = useCallback(() => {
+    navigate('AddPaletteModal');
+  }, [navigate]);
+
   return (
-    <FlatList
-      style={styles.list}
-      data={palettes}
-      keyExtractor={item => item.paletteName}
-      renderItem={({ item }) => (
-        <PalettePreview paletteName={item.paletteName} colors={item.colors} />
-      )}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-      }
-    />
+    <>
+      <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <Text style={styles.buttonText}>Add a color scheme</Text>
+      </TouchableOpacity>
+      <FlatList
+        style={styles.list}
+        data={palettes}
+        keyExtractor={item => item.paletteName}
+        renderItem={({ item }) => (
+          <PalettePreview paletteName={item.paletteName} colors={item.colors} />
+        )}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }
+      />
+    </>
   );
 };
 
@@ -46,5 +63,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: 'white',
+  },
+  button: {
+    height: 50,
+    backgroundColor: 'white',
+    padding: 10,
+  },
+  buttonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'teal',
   },
 });
