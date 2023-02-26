@@ -9,7 +9,8 @@ import {
 import { PalettePreview } from '../components';
 import { useNavigation } from '@react-navigation/native';
 
-export const Home = () => {
+export const Home = ({ route }) => {
+  const newColorPalette = route.params?.newPalette;
   const [palettes, setPalettes] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { navigate } = useNavigation();
@@ -27,6 +28,12 @@ export const Home = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (newColorPalette) {
+      setPalettes(oldPalettes => [newColorPalette, ...oldPalettes]);
+    }
+  }, [newColorPalette]);
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
